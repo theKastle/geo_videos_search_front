@@ -1,1 +1,2 @@
-export default './AuthenticationForm';
+import AuthenticationForm from './AuthenticationForm';
+export default AuthenticationForm;

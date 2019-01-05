@@ -4,7 +4,7 @@ import { authenticate, signup } from './api';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'; // { Link }
 
 import './App.css';
-import AuthenticationForm from './components/AuthenticationForm/AuthenticationForm';
+import AuthenticationForm from './components/AuthenticationForm';
 
 class App extends Component {
   constructor() {
