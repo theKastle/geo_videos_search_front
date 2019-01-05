@@ -28,15 +28,15 @@ class SearchPage extends Component {
     }));
   };
 
-  submitSearchQuery = async () => {
-    const { formValue } = this.state;
+  submitSearchQuery = async (formValue, pageToken) => {
     const { lat, lng, radius } = formValue;
 
     const { data } = await searchVideos(
       this.props.accessToken,
       lat,
       lng,
-      radius
+      radius,
+      pageToken
     );
 
     const { results, pageInfo } = data;
@@ -53,9 +53,35 @@ class SearchPage extends Component {
         <SearchForm
           formValue={this.state.formValue}
           changeValue={this.changeFormValue}
-          submitForm={this.submitSearchQuery}
+          submitForm={() => this.submitSearchQuery(this.state.formValue)}
         />
         <SearchResults results={this.state.results} />
+        <div>
+          {this.state.pageInfo.prevPageToken && (
+            <button
+              onClick={() =>
+                this.submitSearchQuery(
+                  this.state.formValue,
+                  this.state.pageInfo.prevPageToken
+                )
+              }
+            >
+              Prev
+            </button>
+          )}
+          {this.state.pageInfo.nextPageToken && (
+            <button
+              onClick={() =>
+                this.submitSearchQuery(
+                  this.state.formValue,
+                  this.state.pageInfo.nextPageToken
+                )
+              }
+            >
+              Next
+            </button>
+          )}
+        </div>
       </div>
     );
   }

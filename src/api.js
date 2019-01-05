@@ -1,9 +1,12 @@
 import axios from './axios';
 
-export const searchVideos = (token, lat, lng, radius) => {
-  return axios.get(`/videos?lat=${lat}&lng=${lng}&radius=${radius}km`, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
+export const searchVideos = (token, lat, lng, radius, pageToken) => {
+  return axios.get(
+    `/videos?lat=${lat}&lng=${lng}&radius=${radius}km&pageToken=${pageToken || ''}`,
+    {
+      headers: { Authorization: 'Bearer ' + token }
+    }
+  );
 };
 
 export const authenticate = (email, password) => {
