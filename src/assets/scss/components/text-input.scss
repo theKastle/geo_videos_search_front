@@ -1,0 +1,45 @@
+.text-input {
+  &__wrapper {
+    border: 1px solid rgba($color-gray, 0.3);
+    border-radius: 4px;
+    padding: 0.8rem;
+    width: 100%;
+    margin: 0 0 1rem;
+    background: white;
+
+    &--row {
+      width: calc(25% - 1rem);
+      margin-right: 1rem;
+      flex: 0 1 auto;
+
+      @media (max-width: 767px) {
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+    }
+
+    &--dark {
+      background-color: $color-main;
+      border: 0;
+      border-bottom: 2px solid white;
+      border-radius: 0px;
+    }
+  }
+
+  &__input {
+    border: 0;
+    letter-spacing: 1px;
+    width: 100%;
+    font-size: $font-size-small;
+
+    &--dark {
+      background-color: $color-main;
+      color: white;
+
+      &::placeholder {
+        color: white;
+        opacity: 1;
+      }
+    }
+  }
+}

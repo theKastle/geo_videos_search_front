@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import SearchForm from '../components/SearchForm';
 import SearchResults from '../components/SearchResults';
 import { searchVideos } from '../api';
-import './App.css';
 
 class SearchPage extends Component {
   constructor() {
@@ -31,6 +30,10 @@ class SearchPage extends Component {
   submitSearchQuery = async (formValue, pageToken) => {
     const { lat, lng, radius } = formValue;
 
+    if (!lat || !lng || !radius) {
+      return;
+    }
+
     const { data } = await searchVideos(
       this.props.accessToken,
       lat,
@@ -49,16 +52,17 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="search-page">
         <SearchForm
           formValue={this.state.formValue}
           changeValue={this.changeFormValue}
           submitForm={() => this.submitSearchQuery(this.state.formValue)}
         />
         <SearchResults results={this.state.results} />
-        <div>
+        <div className="d-flex flex-items-center">
           {this.state.pageInfo.prevPageToken && (
             <button
+              className="button button--light"
               onClick={() =>
                 this.submitSearchQuery(
                   this.state.formValue,
@@ -71,6 +75,7 @@ class SearchPage extends Component {
           )}
           {this.state.pageInfo.nextPageToken && (
             <button
+              className="button button--light"
               onClick={() =>
                 this.submitSearchQuery(
                   this.state.formValue,

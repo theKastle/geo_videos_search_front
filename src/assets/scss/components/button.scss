@@ -1,0 +1,23 @@
+.button {
+  background-color: $color-main;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  margin: 0 7px;
+
+  &--light {
+    background-color: white;
+    color: $color-main;
+    font-size: $font-size-normal;
+    font-family: $font-family-bold;
+    border: 0px;
+    border-bottom: 2px solid $color-main;
+    border-radius: 0px;
+  }
+
+  @media (max-width: 767px) {
+    margin: 0.5rem 0;
+  }
+}

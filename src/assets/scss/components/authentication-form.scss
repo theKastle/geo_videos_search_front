@@ -1,0 +1,28 @@
+.authentication-form {
+  color: white;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__description {
+    margin-top: 4rem;
+  }
+}
+
+.auth-box {
+  margin: 1rem;
+  padding: 2rem;
+  border-radius: 4px;
+  background-color: white;
+  width: 50%;
+  color: $color-gray-dark;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    width: 90%;
+  }
+}
