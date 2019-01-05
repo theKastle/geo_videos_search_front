@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchForm from '../components/SearchForm';
+import SearchResults from '../components/SearchResults';
 import { searchVideos } from '../api';
 import './App.css';
 
@@ -31,7 +32,12 @@ class SearchPage extends Component {
     const { formValue } = this.state;
     const { lat, lng, radius } = formValue;
 
-    const { data } = await searchVideos(this.props.accessToken, lat, lng, radius);
+    const { data } = await searchVideos(
+      this.props.accessToken,
+      lat,
+      lng,
+      radius
+    );
 
     const { results, pageInfo } = data;
 
@@ -49,6 +55,7 @@ class SearchPage extends Component {
           changeValue={this.changeFormValue}
           submitForm={this.submitSearchQuery}
         />
+        <SearchResults results={this.state.results} />
       </div>
     );
   }
