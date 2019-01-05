@@ -14,12 +14,23 @@ const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
         <div className="text-input__wrapper">
           <input
             type="text"
-            placeholder="Email"
-            onChange={e => changeValue('email', e.target.value)}
-            value={formValue.email}
+            placeholder="Username"
+            onChange={e => changeValue('username', e.target.value)}
+            value={formValue.username}
             className="text-input__input"
           />
         </div>
+        {type === 'signup' && (
+          <div className="text-input__wrapper">
+            <input
+              type="text"
+              placeholder="Fullname"
+              onChange={e => changeValue('fullname', e.target.value)}
+              value={formValue.fullname}
+              className="text-input__input"
+            />
+          </div>
+        )}
         <div className="text-input__wrapper">
           <input
             type="password"
@@ -37,12 +48,16 @@ const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
         {type === 'login' ? (
           <>
             <span>Not have an account ? </span>
-            <Link to={`/signup`} className="color-white">Signup</Link>
+            <Link to={`/signup`} className="color-white">
+              Signup
+            </Link>
           </>
         ) : (
           <>
             <span>Already have an account ? </span>
-            <Link to={`/login`} className="color-white">Login</Link>
+            <Link to={`/login`} className="color-white">
+              Login
+            </Link>
           </>
         )}
       </div>

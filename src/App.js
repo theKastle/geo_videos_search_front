@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchPage from './pages/Search';
 import { authenticate, signup } from './api';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'; // { Link }
+import jwt from 'jsonwebtoken';
 
 import AuthenticationForm from './components/AuthenticationForm';
 
@@ -11,8 +12,9 @@ class App extends Component {
     this.state = {
       accessToken: '',
       isAuthenticated: false,
-      password: '',
-      email: ''
+      username: '',
+      fullname: '',
+      password: ''
     };
   }
 
@@ -22,22 +24,24 @@ class App extends Component {
     });
   };
 
-  login = async (email, password) => {
+  login = async (username, password) => {
     try {
-      const { data } = await authenticate(email, password);
+      const { data } = await authenticate(username, password);
       const { accessToken } = data;
+      const { fullname } = jwt.decode(accessToken);
 
       this.setState({
         accessToken,
-        isAuthenticated: true
+        isAuthenticated: true,
+        fullname
       });
     } catch (err) {}
   };
 
-  signup = async (email, password) => {
+  signup = async (username, password, fullname) => {
     try {
-      await signup(email, password);
-      await this.login(email, password);
+      await signup(username, password, fullname);
+      await this.login(username, password);
     } catch (err) {}
   };
 
@@ -46,7 +50,7 @@ class App extends Component {
       <BrowserRouter>
         <>
           {this.state.isAuthenticated ? (
-            <SearchPage accessToken={this.state.accessToken} />
+            <SearchPage accessToken={this.state.accessToken} fullname={this.state.fullname}/>
           ) : (
             <div
               className={`authentication-page ${
@@ -64,7 +68,7 @@ class App extends Component {
                       changeValue={this.changeFormValue}
                       formValue={this.state}
                       submitForm={() =>
-                        this.login(this.state.email, this.state.password)
+                        this.login(this.state.username, this.state.password)
                       }
                     />
                   )}
@@ -77,7 +81,7 @@ class App extends Component {
                       changeValue={this.changeFormValue}
                       formValue={this.state}
                       submitForm={() =>
-                        this.signup(this.state.email, this.state.password)
+                        this.signup(this.state.username, this.state.password, this.state.fullname)
                       }
                     />
                   )}

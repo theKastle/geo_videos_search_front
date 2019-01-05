@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as SearchIcon } from '../../assets/images/search.svg';
 
-const SearchForm = ({ submitForm, changeValue, formValue }) => {
+const SearchForm = ({ submitForm, changeValue, formValue, fullname = '' }) => {
   return (
     <div className="search-form">
       <div className="text-input__wrapper text-input__wrapper--row text-input__wrapper--dark">
@@ -32,7 +32,10 @@ const SearchForm = ({ submitForm, changeValue, formValue }) => {
         />
       </div>
       <div className="button" onClick={submitForm}>
-        <SearchIcon width={24} height={24}/>
+        <SearchIcon width={24} height={24} />
+      </div>
+      <div className="fullname-welcome">
+        {`Hello, ${(fullname).slice(0, 10)} ${fullname.length > 10 ? '...' : ''}`}
       </div>
     </div>
   );

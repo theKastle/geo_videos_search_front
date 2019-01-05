@@ -9,22 +9,25 @@ export const searchVideos = (token, lat, lng, radius, pageToken) => {
   );
 };
 
-export const authenticate = (email, password) => {
+export const authenticate = (username, password) => {
   const data = {
     strategy: 'local',
-    email,
+    username,
     password
   };
 
   return axios.post(`/authentication`, data);
 };
 
-export const signup = (email, password) => {
+export const signup = (username, password, fullname) => {
   const data = {
     strategy: 'local',
-    email,
-    password
+    username,
+    password,
+    fullname
   };
+
+  console.log(data)
 
   return axios.post(`/users`, data);
 };

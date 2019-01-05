@@ -51,10 +51,13 @@ class SearchPage extends Component {
   };
 
   render() {
+    const { fullname = '' } = this.props;
+
     return (
       <div className="search-page">
         <SearchForm
           formValue={this.state.formValue}
+          fullname={fullname}
           changeValue={this.changeFormValue}
           submitForm={() => this.submitSearchQuery(this.state.formValue)}
         />
