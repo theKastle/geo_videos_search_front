@@ -1,57 +1,75 @@
 import React, { Component } from 'react';
-import FormData from './components/SearchForm/SearchForm';
-import { searchVideos } from './api';
+import SearchPage from './pages/Search';
+import { authenticate } from './api';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'; // { Link }
+
 import './App.css';
+import AuthenticationForm from './components/AuthenticationForm/AuthenticationForm';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      formValue: {
-        lat: '',
-        lng: '',
-        radius: ''
-      },
-      loading: false,
-      accessToken:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJ1c2VySWQiOiI1YzMwMTUzMjM3MDBmYzIyMzFlNjkyNDAiLCJpYXQiOjE1NDY2NjI4MzAsImV4cCI6MTU0Njc0OTIzMCwiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiYW5vbnltb3VzIiwianRpIjoiNDFkODFiZDgtYjliZi00OGE0LWI3MWQtNGRiZDA2MDc2MmVhIn0.8SENEhr2PIYgD3qxBEYP07Hi82qFgFm2doyJmXhTVfU',
-      results: [],
-      pageInfo: {}
+      accessToken: '',
+      isAuthenticated: false,
+      password: '',
+      email: ''
     };
   }
 
   changeFormValue = (label, value) => {
-    this.setState(prevState => ({
-      formValue: {
-        ...prevState.formValue,
-        [label]: value
-      }
-    }));
+    this.setState({
+      [label]: value
+    });
   };
 
-  submitSearchQuery = async () => {
-    const { accessToken, formValue } = this.state;
-    const { lat, lng, radius } = formValue;
+  login = async () => {
+    const { email, password } = this.state;
+    try {
+      const { data } = await authenticate(email, password);
+      const { accessToken } = data;
 
-    const { data } = await searchVideos(accessToken, lat, lng, radius);
-
-    const { results, pageInfo } = data;
-
-    this.setState({
-      results,
-      pageInfo
-    });
+      this.setState({
+        accessToken,
+        isAuthenticated: true
+      });
+    } catch (err) {}
   };
 
   render() {
     return (
-      <div className="App">
-        <FormData
-          formValue={this.state.formValue}
-          changeValue={this.changeFormValue}
-          submitForm={this.submitSearchQuery}
-        />
-      </div>
+      <BrowserRouter>
+        <div>
+          {this.state.isAuthenticated ? (
+            <SearchPage accessToken={this.state.accessToken} />
+          ) : (
+            <Switch>
+              <Route
+                path="/login"
+                render={props => (
+                  <AuthenticationForm
+                    type={'login'}
+                    changeValue={this.changeFormValue}
+                    formValue={this.state}
+                    submitForm={this.login}
+                  />
+                )}
+              />
+              <Route
+                path="/signup"
+                render={props => (
+                  <AuthenticationForm
+                    type={'login'}
+                    changeValue={this.changeFormValue}
+                    formValue={this.state}
+                  />
+                )}
+              />
+              <Redirect to="/login" />
+            </Switch>
+          )}
+        </div>
+      </BrowserRouter>
     );
   }
 }
