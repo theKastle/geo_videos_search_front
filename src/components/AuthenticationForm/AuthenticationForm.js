@@ -1,8 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
   return (
     <div>
+      <div>
+        {type === 'login' && (
+          <>
+            <span>Not have an account ? </span>
+            <Link to={`/signup`}>Đăng ký</Link>
+          </>
+        )}
+      </div>
       <div>
         <input
           type="text"

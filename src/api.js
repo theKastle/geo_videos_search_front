@@ -15,3 +15,13 @@ export const authenticate = (email, password) => {
 
   return axios.post(`/authentication`, data);
 };
+
+export const signup = (email, password) => {
+  const data = {
+    strategy: 'local',
+    email,
+    password
+  };
+
+  return axios.post(`/users`, data);
+};

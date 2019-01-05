@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SearchPage from './pages/Search';
-import { authenticate } from './api';
+import { authenticate, signup } from './api';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'; // { Link }
 
 import './App.css';
@@ -23,8 +23,7 @@ class App extends Component {
     });
   };
 
-  login = async () => {
-    const { email, password } = this.state;
+  login = async (email, password) => {
     try {
       const { data } = await authenticate(email, password);
       const { accessToken } = data;
@@ -33,6 +32,13 @@ class App extends Component {
         accessToken,
         isAuthenticated: true
       });
+    } catch (err) {}
+  };
+
+  signup = async (email, password) => {
+    try {
+      await signup(email, password);
+      await this.login(email, password);
     } catch (err) {}
   };
 
@@ -51,7 +57,9 @@ class App extends Component {
                     type={'login'}
                     changeValue={this.changeFormValue}
                     formValue={this.state}
-                    submitForm={this.login}
+                    submitForm={() =>
+                      this.login(this.state.email, this.state.password)
+                    }
                   />
                 )}
               />
@@ -59,9 +67,12 @@ class App extends Component {
                 path="/signup"
                 render={props => (
                   <AuthenticationForm
-                    type={'login'}
+                    type={'signup'}
                     changeValue={this.changeFormValue}
                     formValue={this.state}
+                    submitForm={() =>
+                      this.signup(this.state.email, this.state.password)
+                    }
                   />
                 )}
               />
