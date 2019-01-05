@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FormData from '../components/SearchForm/SearchForm';
+import SearchForm from '../components/SearchForm';
 import { searchVideos } from '../api';
 import './App.css';
 
@@ -43,9 +43,8 @@ class SearchPage extends Component {
 
   render() {
     return (
-      
       <div className="App">
-        <FormData
+        <SearchForm
           formValue={this.state.formValue}
           changeValue={this.changeFormValue}
           submitForm={this.submitSearchQuery}
