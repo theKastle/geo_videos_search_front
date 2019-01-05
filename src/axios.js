@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const baseURL =
   process.env.NODE_ENV === 'production'
-    ? ''
+    ? 'https://geo-video-search-server.herokuapp.com'
     : 'http://localhost:3030';
 
 const axiosInstance = axios.create({
