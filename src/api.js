@@ -27,7 +27,5 @@ export const signup = (username, password, fullname) => {
     fullname
   };
 
-  console.log(data)
-
   return axios.post(`/users`, data);
 };

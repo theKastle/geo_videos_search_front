@@ -1,11 +1,12 @@
 .button {
   background-color: $color-main;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2.5rem;
   border-radius: 4px;
   text-align: center;
   color: white;
   cursor: pointer;
   margin: 0 7px;
+  position: relative;
 
   &--light {
     background-color: white;
@@ -19,5 +20,21 @@
 
   @media (max-width: 767px) {
     margin: 0.5rem 0;
+  }
+
+  &--loading {
+    &::after {
+      position: absolute;
+      content: '';
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      background-image: url($imagePath+'loading.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+    }
   }
 }

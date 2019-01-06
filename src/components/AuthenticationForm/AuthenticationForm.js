@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
+const AuthenticationForm = ({
+  type,
+  submitForm,
+  changeValue,
+  formValue,
+  loading,
+  error
+}) => {
   return (
     <div className="authentication-form">
       <h1 className="authentication-form__title">GEO VIDEO SEARCH</h1>
@@ -11,6 +18,11 @@ const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
           : 'Sign up to search videos'}
       </h3>
       <div className="auth-box">
+        {error && (
+          <div className="auth-box__error">
+            Something went wrong. Please try again.
+          </div>
+        )}
         <div className="text-input__wrapper">
           <input
             type="text"
@@ -40,7 +52,10 @@ const AuthenticationForm = ({ type, submitForm, changeValue, formValue }) => {
             className="text-input__input"
           />
         </div>
-        <div className="button" onClick={submitForm}>
+        <div
+          className={`button ${loading ? 'button--loading' : ''}`}
+          onClick={submitForm}
+        >
           {type.toUpperCase()}
         </div>
       </div>

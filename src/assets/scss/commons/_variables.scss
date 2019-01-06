@@ -1,10 +1,12 @@
-$imagePath: '../../images/';
+$imagePath: '../images/';
 
 $color-main: #4286f5;
 $color-gray-lighter: #d8d8d8;
 $color-gray: #979797;
 $color-gray-dark: #6b6b6b;
 $color-black: #353535;
+$color-red: lighten(red, 0.3);
 
+$font-size-big: 24px;
 $font-size-normal: 18px;
 $font-size-small: 16px;

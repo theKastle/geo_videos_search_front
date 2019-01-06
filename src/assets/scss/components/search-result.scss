@@ -5,6 +5,12 @@
   align-items: center;
 }
 
+.search-results--status {
+  color: $color-gray;
+  font-size: $font-size-big;
+  font-family: $font-family-bold;
+}
+
 .search-result {
   display: flex;
   margin: 1rem;

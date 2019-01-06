@@ -14,7 +14,9 @@ class App extends Component {
       isAuthenticated: false,
       username: '',
       fullname: '',
-      password: ''
+      password: '',
+      processingAuth: false,
+      error: false
     };
   }
 
@@ -26,31 +28,72 @@ class App extends Component {
 
   login = async (username, password) => {
     try {
+      await this.toggleError();
+      await this.toggleProcessingAuth();
+      
       const { data } = await authenticate(username, password);
       const { accessToken } = data;
       const { fullname } = jwt.decode(accessToken);
-
+      
       this.setState({
         accessToken,
         isAuthenticated: true,
-        fullname
+        fullname,
+        processingAuth: false,
+        error: false
       });
-    } catch (err) {}
+    } catch (err) {
+      this.setState({
+        processingAuth: false,
+        error: true
+      });
+    }
   };
-
+  
   signup = async (username, password, fullname) => {
     try {
+      await this.toggleError();
+      await this.toggleProcessingAuth();
       await signup(username, password, fullname);
       await this.login(username, password);
-    } catch (err) {}
+    } catch (err) {
+      this.setState({
+        processingAuth: false,
+        error: true
+      });
+    }
   };
+
+  async toggleProcessingAuth() {
+    await new Promise((resolve, reject) => {
+      this.setState(
+        prevState => ({
+          processingAuth: !prevState.processingAuth
+        }),
+        () => {
+          return resolve();
+        }
+      );
+    });
+  }
+
+  async toggleError() {
+    await new Promise((resolve, reject) => {
+      this.setState({ error: false }, () => {
+        return resolve();
+      });
+    });
+  }
 
   render() {
     return (
       <BrowserRouter>
         <>
           {this.state.isAuthenticated ? (
-            <SearchPage accessToken={this.state.accessToken} fullname={this.state.fullname}/>
+            <SearchPage
+              accessToken={this.state.accessToken}
+              fullname={this.state.fullname}
+            />
           ) : (
             <div
               className={`authentication-page ${
@@ -65,6 +108,8 @@ class App extends Component {
                   render={props => (
                     <AuthenticationForm
                       type={'login'}
+                      loading={this.state.processingAuth}
+                      error={this.state.error}
                       changeValue={this.changeFormValue}
                       formValue={this.state}
                       submitForm={() =>
@@ -78,10 +123,16 @@ class App extends Component {
                   render={props => (
                     <AuthenticationForm
                       type={'signup'}
+                      loading={this.state.processingAuth}
+                      error={this.state.error}
                       changeValue={this.changeFormValue}
                       formValue={this.state}
                       submitForm={() =>
-                        this.signup(this.state.username, this.state.password, this.state.fullname)
+                        this.signup(
+                          this.state.username,
+                          this.state.password,
+                          this.state.fullname
+                        )
                       }
                     />
                   )}
