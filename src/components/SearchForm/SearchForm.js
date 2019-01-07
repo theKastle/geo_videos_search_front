@@ -1,7 +1,14 @@
 import React from 'react';
 import { ReactComponent as SearchIcon } from '../../assets/images/search.svg';
+import { ReactComponent as LogoutIcon } from '../../assets/images/logout.svg';
 
-const SearchForm = ({ submitForm, changeValue, formValue, fullname = '' }) => {
+const SearchForm = ({
+  submitForm,
+  changeValue,
+  formValue,
+  fullname = '',
+  logout
+}) => {
   return (
     <div className="search-form">
       <div className="text-input__wrapper text-input__wrapper--row text-input__wrapper--dark">
@@ -35,7 +42,10 @@ const SearchForm = ({ submitForm, changeValue, formValue, fullname = '' }) => {
         <SearchIcon width={24} height={24} />
       </div>
       <div className="fullname-welcome">
-        {`Hello, ${(fullname).slice(0, 10)} ${fullname.length > 10 ? '...' : ''}`}
+        {`Hello, ${fullname.slice(0, 10)} ${fullname.length > 10 ? '...' : ''}`}
+      </div>
+      <div className="d-flex flex-items-center" onClick={logout}>
+        <LogoutIcon width={24} height={24} />
       </div>
     </div>
   );

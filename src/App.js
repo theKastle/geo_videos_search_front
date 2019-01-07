@@ -6,18 +6,45 @@ import jwt from 'jsonwebtoken';
 
 import AuthenticationForm from './components/AuthenticationForm';
 
+const initState = {
+  accessToken: '',
+  isAuthenticated: false,
+  checkLogin: false,
+  username: '',
+  fullname: '',
+  password: '',
+  processingAuth: false,
+  error: false
+};
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      accessToken: '',
-      isAuthenticated: false,
-      username: '',
-      fullname: '',
-      password: '',
-      processingAuth: false,
-      error: false
+      ...initState
     };
+  }
+
+  componentDidMount() {
+    const savedToken = localStorage.getItem('accessToken');
+
+    if (!savedToken) {
+      return this.logout();
+    }
+
+    const { fullname, exp } = jwt.decode(savedToken);
+    const currentTime = new Date().getTime() / 1000;
+
+    if (currentTime > exp) {
+      this.logout()
+    } else {
+      this.setState({
+        accessToken: savedToken,
+        isAuthenticated: true,
+        checkLogin: true,
+        fullname
+      });
+    }
   }
 
   changeFormValue = (label, value) => {
@@ -26,15 +53,25 @@ class App extends Component {
     });
   };
 
+  logout = async () => {
+    localStorage.removeItem('accessToken');
+    this.setState({
+      ...initState,
+      checkLogin: true
+    });
+  };
+
   login = async (username, password) => {
     try {
       await this.toggleError();
       await this.toggleProcessingAuth();
-      
+
       const { data } = await authenticate(username, password);
       const { accessToken } = data;
       const { fullname } = jwt.decode(accessToken);
-      
+
+      localStorage.setItem('accessToken', accessToken);
+
       this.setState({
         accessToken,
         isAuthenticated: true,
@@ -49,7 +86,7 @@ class App extends Component {
       });
     }
   };
-  
+
   signup = async (username, password, fullname) => {
     try {
       await this.toggleError();
@@ -86,6 +123,10 @@ class App extends Component {
   }
 
   render() {
+    if (!this.state.checkLogin) {
+      return null;
+    }
+
     return (
       <BrowserRouter>
         <>
@@ -93,6 +134,7 @@ class App extends Component {
             <SearchPage
               accessToken={this.state.accessToken}
               fullname={this.state.fullname}
+              logout={this.logout}
             />
           ) : (
             <div

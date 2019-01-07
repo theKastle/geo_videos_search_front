@@ -71,6 +71,10 @@ class SearchPage extends Component {
         );
       });
     } catch (err) {
+      if (err.response.status === 401) {
+        return this.props.logout();
+      }
+
       this.setState({
         loading: false,
         error: true
@@ -79,7 +83,7 @@ class SearchPage extends Component {
   };
 
   render() {
-    const { fullname = '' } = this.props;
+    const { fullname = '', logout } = this.props;
 
     return (
       <div className="search-page">
@@ -88,6 +92,7 @@ class SearchPage extends Component {
           fullname={fullname}
           changeValue={this.changeFormValue}
           submitForm={() => this.submitSearchQuery(this.state.formValue)}
+          logout={logout}
         />
         <SearchResults
           loading={this.state.loading}
